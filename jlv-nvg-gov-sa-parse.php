@@ -3,7 +3,7 @@
 Plugin Name: Saudi ADHD Society NVG.gov.sa parser
 Plugin URI: https://github.com/Saudi-ADHD-Society/jlv-nvg-gov-sa-parse
 Description: Fetches our latest volunteer opportunities from the Saudi National Volunteering portal
-Version: 1.0.5
+Version: 1.0.6
 Author: Jeremy Varnham
 Author URI: https://abuyasmeen.com
 License: GPL3
@@ -19,6 +19,7 @@ function jlv_nvg_make_nvg_fetch_shortcode( $atts="" ) {
 	// NVG site information
 	$site_url               = 'https://nvg.gov.sa/';
 	$site_page              = 'Opportunities/GetOpportunities/';
+	$site_detail_page       = '/Opportunities/Details/';
 	$search_field           = 'organizationName';
 	$search_term            = 'الجمعية السعودية لاضطراب فرط الحركة وتشتت الانتباه (إشراق)';
 	$urlencoded_search_term = urlencode( $search_term );
@@ -35,7 +36,7 @@ function jlv_nvg_make_nvg_fetch_shortcode( $atts="" ) {
 
 	// Fetch DOM data from NVG page and just keep elements defined above.
 	$domxpath       = jlv_nvg_get_source_dom( $source_url );
-	$elements_array = jlv_nvg_filter_html_input( $domxpath, $tag_classes, $site_url );
+	$elements_array = jlv_nvg_filter_source_html( $domxpath, $tag_classes, $site_url );
 	$elements_count = count( $elements_array['card_title'] );
 
 	$html = jlv_nvg_make_html_table_output( $tag_classes, $elements_array, $elements_count );
@@ -85,7 +86,7 @@ function jlv_nvg_get_source_dom( $source_url ) {
  * Filter the html elements by class.
  *
  */
-function jlv_nvg_filter_html_input( $domxpath, $tag_classes, $site_url=null ) {
+function jlv_nvg_filter_source_html( $domxpath, $tag_classes, $site_url=null ) {
 	foreach ( $tag_classes as $tag => $classes ) {
 		foreach ( $classes as $class => $label ) { 
 			$expression     = './/' . $tag . '[contains(concat(" ", normalize-space(@class), " "), " ' . $class . ' ")]';
@@ -93,7 +94,10 @@ function jlv_nvg_filter_html_input( $domxpath, $tag_classes, $site_url=null ) {
 			//$elements_count = $elements->count();
 			
 			foreach ( $elements as $element ) {
-				$filtered[$class][] = ( 'a' == $tag ) ? '<a target="_blank" href="' . $site_url . $element->getAttribute('href') . '">' . $element->nodeValue . '</a>' : $element->nodeValue;
+				$link       = $element->getAttribute('href');
+				$link_parts = explode( "/", $link );
+				$id         = $link_parts[3];
+				$filtered[$class][] = ( 'a' == $tag ) ? '<a target="_blank" id="' . $id . '" href="' . $site_url . $link . '">' . $element->nodeValue . '</a>' : $element->nodeValue;
 			}
 		}
 	}
