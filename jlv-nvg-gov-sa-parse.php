@@ -103,6 +103,10 @@ function jlv_nvg_filter_html_input( $domxpath, $tag_classes, $site_url=null ) {
 	return $result;
 }
 
+/*
+ * Make html table for output.
+ *
+ */
 function jlv_nvg_make_html_table_output( $tag_classes, $elements_array, $elements_count ) {
 	
 	// Table header.	
