@@ -91,7 +91,6 @@ function jlv_nvg_filter_source_html( $domxpath, $tag_classes, $site_url=null ) {
 		foreach ( $classes as $class => $label ) { 
 			$expression     = './/' . $tag . '[contains(concat(" ", normalize-space(@class), " "), " ' . $class . ' ")]';
 			$elements       = $domxpath->evaluate( $expression );
-			//$elements_count = $elements->count();
 			
 			foreach ( $elements as $element ) {
 				$link       = $element->getAttribute('href');
@@ -101,7 +100,6 @@ function jlv_nvg_filter_source_html( $domxpath, $tag_classes, $site_url=null ) {
 			}
 		}
 	}
-	//$result = array( 'html' => $filtered, 'count' => $elements_count );
 	$result = $filtered;
 	
 	return $result;
