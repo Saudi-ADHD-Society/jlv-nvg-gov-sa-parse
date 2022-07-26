@@ -24,7 +24,7 @@ function jlv_nvg_fetch_shortcode( $atts="" ) {
 	$full_url                = $site_url . $site_page . '?organizationName=' . $urlencoded_organization;
 	
 	// Fetch DOM data from NVG page.
-	$domxpath = jlv_nvg_get_curl_data( $full_url );
+	$domxpath = jlv_nvg_get_dom_data( $full_url );
 	
 	// Paragraph element classes on NVG page.
 	$classnames['card_title']    = 'عنوان الفرصة';
@@ -110,7 +110,7 @@ function jlv_nvg_init_curl( $url ) {
  * Fetch the remote html content.
  *
  */
-function jlv_nvg_get_curl_data( $full_url ) {
+function jlv_nvg_get_dom_data( $full_url ) {
 	$html     = jlv_nvg_init_curl( $full_url );
 	$dom      = new DOMDocument();
 	$dom->loadHTML( $html );
