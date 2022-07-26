@@ -3,7 +3,7 @@
 Plugin Name: Saudi ADHD Society NVG.gov.sa parser
 Plugin URI: https://github.com/Saudi-ADHD-Society/jlv-nvg-gov-sa-parse
 Description: Fetches our latest volunteer opportunities from the Saudi National Volunteering portal
-Version: 1.0.0
+Version: 1.0.1
 Author: Jeremy Varnham
 Author URI: https://abuyasmeen.com
 License: GPL3
@@ -58,18 +58,24 @@ function jlv_nvg_fetch_shortcode( $atts="" ) {
 	
 	// Construct output table.
 	$table = '<table>';
-		$table .= '<thead><tr>';
+	$table .= '<thead><tr>';
+	
 	foreach ( $classnames as $class => $label ) {
 		$table .= '<th>' . $label . '</th>';
 	}
+	
+	$table .= '</tr></thead>';
+	$table .= '<tbody>';
+
 	for ( $i = 0; $i < $elements_count; $i++ ) {
-		$table .= '</tr></thead>';
-		$table .= '<tbody><tr>';
+		$table .= '<tr>';
 		foreach ( $classnames as $class => $label ) {
 			$table .= '<td class="' . $class . '">' . $opportunity[$class][$i] . '</td>';
 		}
-		$table .= '</tr></tbody>';
-	} 
+		$table .= '</tr>';
+	}
+	
+	$table .= '</tbody>';
 	$table .= '</table>';
 	
 	return $table;
