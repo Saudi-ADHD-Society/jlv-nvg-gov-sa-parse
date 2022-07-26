@@ -25,7 +25,7 @@ function jlv_nvg_fetch_shortcode( $atts="" ) {
 	// Fetch DOM data from NVG page.
 	$domxpath = jlv_nvg_get_dom_data( $full_url );
 	
-	// Paragraph tags and classes on NVG page, with corresponding labels.
+	// Tags and classes on NVG page, with corresponding labels.
 	$tag_classes['p']['card_title']    = 'عنوان الفرصة';
 	$tag_classes['p']['card_location'] = 'المدينة';
 	$tag_classes['p']['card_text']     = 'وصف الفرصة';
