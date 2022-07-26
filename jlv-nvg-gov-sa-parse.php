@@ -3,7 +3,7 @@
 Plugin Name: Saudi ADHD Society NVG.gov.sa parser
 Plugin URI: https://github.com/Saudi-ADHD-Society/jlv-nvg-gov-sa-parse
 Description: Fetches our latest volunteer opportunities from the Saudi National Volunteering portal
-Version: 1.0.2
+Version: 1.0.3
 Author: Jeremy Varnham
 Author URI: https://abuyasmeen.com
 License: GPL3
@@ -16,7 +16,6 @@ License: GPL3
  *
  */
 function jlv_nvg_fetch_shortcode( $atts="" ) {
-
 	$site_url                = 'https://nvg.gov.sa/';
 	$site_page               = 'Opportunities/GetOpportunities/';
 	$organization_title      = 'الجمعية السعودية لاضطراب فرط الحركة وتشتت الانتباه (إشراق)';
@@ -26,41 +25,42 @@ function jlv_nvg_fetch_shortcode( $atts="" ) {
 	// Fetch DOM data from NVG page.
 	$domxpath = jlv_nvg_get_dom_data( $full_url );
 	
-	// Paragraph element classes on NVG page.
-	$classnames_p['card_title']    = 'عنوان الفرصة';
-	$classnames_p['card_location'] = 'المدينة';
-	$classnames_p['card_text']     = 'وصف الفرصة';
-	$classnames_p['days_number']   = 'عدد الأيام المتبقية';
-	$classnames_p['dates']         = 'التواريخ';
-	$classnames_p['seats_number']  = 'عدد المقاعد';
-	$classnames_a['join_btn']      = 'الرابط';
-	$classnames                    = array_merge( $classnames_p, $classnames_a );
-	
-	$filtered_results_p = jlv_nvg_filter_html( $domxpath, 'p', $classnames_p, null );
-	$filtered_results_a = jlv_nvg_filter_html( $domxpath, 'a', $classnames_a, $site_url );
-	
-	$filtered_results   = array_merge( $filtered_results_p['html'], $filtered_results_a['html'] );
-	$elements_count     = $filtered_results_p['count'] + $filtered_results_a['count'];
+	// Paragraph tags and classes on NVG page, with corresponding labels.
+	$tag_classes['p']['card_title']    = 'عنوان الفرصة';
+	$tag_classes['p']['card_location'] = 'المدينة';
+	$tag_classes['p']['card_text']     = 'وصف الفرصة';
+	$tag_classes['p']['days_number']   = 'عدد الأيام المتبقية';
+	$tag_classes['p']['dates']         = 'التواريخ';
+	$tag_classes['p']['seats_number']  = 'عدد المقاعد';
+	$tag_classes['a']['join_btn']      = 'الرابط';
 
-	// Construct output table.
-	$table  = '<table>';
-	$table .= '<thead><tr>';
-	
-	foreach ( $classnames as $class => $label ) {
-		$table .= '<th>' . $label . '</th>';
+	$filtered_results   = jlv_nvg_filter_html( $domxpath, $tag_classes, $site_url );
+	$elements_count     = $filtered_results['count'];
+
+	// Construct table.	
+	foreach ( $tag_classes as $tag => $classes ) {
+		foreach ( $classes as $class => $label ) { 
+			$table_th .= '<th>' . $label . '</th>';
+		}
 	}
-	
-	$table .= '</tr></thead>';
-	$table .= '<tbody>';
+	$table_head = '<tr>' . $table_th . '</tr>';
 
 	for ( $i = 0; $i < $elements_count; $i++ ) {
-		$table .= '<tr>';
-		foreach ( $classnames as $class => $label ) {
-			$table .= '<td class="' . $class . '">' . $filtered_results[$class][$i] . '</td>';
+		$table_body .= '<tr>';
+		foreach ( $tag_classes as $tag => $classes ) {
+			foreach ( $classes as $class => $label ) { 
+				$table_body .= '<td class="' . $class . '">' . $filtered_results['html'][$class][$i] . '</td>';
+			}
 		}
-		$table .= '</tr>';
+		$table_body .= '</tr>';
 	}
-	
+
+	$table  = '<table>';
+	$table .= '<thead>';
+	$table .= $table_head;
+	$table .= '</thead>';
+	$table .= '<tbody>';
+	$table .= $table_body;
 	$table .= '</tbody>';
 	$table .= '</table>';
 	
@@ -109,17 +109,19 @@ function jlv_nvg_get_dom_data( $full_url ) {
  * Filter the html elements by class.
  *
  */
-function jlv_nvg_filter_html( $domxpath, $html_element, $classnames, $site_url=null ) {
-	foreach ( $classnames as $class => $label ) {
-		$expression     = './/' . $html_element . '[contains(concat(" ", normalize-space(@class), " "), " ' . $class . ' ")]';
-		$elements       = $domxpath->evaluate( $expression );
-		$elements_count = $elements->count();
-		
-		foreach ( $elements as $element ) {
-			$filtered[$class][] = ( $html_element == 'a' ) ? $result[$class][] =  '<a target="_blank" href="' . $site_url . $element->getAttribute('href') . '">' . $element->nodeValue . '</a>' : $element->nodeValue;
+function jlv_nvg_filter_html( $domxpath, $tag_classes, $site_url ) {
+	foreach ( $tag_classes as $tag => $classes ) {
+		foreach ( $classes as $class => $label ) { 
+			$expression     = './/' . $tag . '[contains(concat(" ", normalize-space(@class), " "), " ' . $class . ' ")]';
+			$elements       = $domxpath->evaluate( $expression );
+			$elements_count = $elements->count();
+			
+			foreach ( $elements as $element ) {
+				$filtered[$class][] = ( 'a' == $tag ) ? '<a target="_blank" href="' . $site_url . $element->getAttribute('href') . '">' . $element->nodeValue . '</a>' : $element->nodeValue;
+			}
 		}
 	}
-	
 	$result = array( 'html' => $filtered, 'count' => $elements_count );
+	
 	return $result;
 }
