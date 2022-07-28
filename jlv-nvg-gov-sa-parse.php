@@ -43,7 +43,7 @@ function jlv_nvg_make_nvg_fetch_shortcode( $atts="" ) {
 	$elements_array = jlv_nvg_filter_source_html( $domxpath, $tag_classes, $site_url, $atts['detail_page'] );
 	
 	if ( is_array( $elements_array ) ) {
-		$elements_count = count( $elements_array['card_title'] );	
+		$elements_count = count( $elements_array['card_title'] );
 		$html = jlv_nvg_make_html_table_output( $tag_classes, $elements_array, $elements_count );
 	} else {
 		$html = 'Unable to reach nvg.gov.sa – Please refresh the page.';
@@ -61,7 +61,7 @@ add_shortcode( 'nvg_fetch', 'jlv_nvg_make_nvg_fetch_shortcode' );
  */
 function jlv_nvg_make_nvg_fetch_details_shortcode( $atts="" ) {
 	// NVG site information
-	$opportunity_id     = sanitize_text_field( $_POST['opportunityid'] );	
+	$opportunity_id     = sanitize_text_field( $_POST['opportunityid'] );
 
 	$site_url           = 'https://nvg.gov.sa/';
 	$site_detail_page   = 'Opportunities/GetDetails/';
@@ -145,7 +145,7 @@ function jlv_nvg_filter_source_html( $domxpath, $tag_classes, $site_url=null, $d
 				$filtered['id'][] = $id;
 			}
 		}
-	}	
+	}
 	return $filtered;
 }
 
@@ -190,7 +190,7 @@ function jlv_nvg_make_html_table_output( $tag_classes, $elements_array, $element
 
 function jlv_nvg_get_source_details_dom( $details_source_url, $elements_array_ids ) {
 	foreach ( $elements_array_ids as $id ) {
-		$details[$id] = jlv_nvg_get_source_dom( $details_source_url . $id, 'save' );	
+		$details[$id] = jlv_nvg_get_source_dom( $details_source_url . $id, 'save' );
 	}
 	return $details;
 }
@@ -202,13 +202,11 @@ function jlv_nvg_get_source_details_dom( $details_source_url, $elements_array_id
 function jlv_nvg_filter_source_details_html( $domxpath ) {
 	$expression = './/div//div//div//div//div//p';
 	$elements   = $domxpath->evaluate( $expression );
-			
-			//$elements = $domxpath->query("*/div[@id='apprun-app']");
-			
-			foreach ( $elements as $element ) {
-				$filtered['class'][] = $element->getAttribute('class');
-				$filtered['value'][] = $element->nodeValue;
-			}
+						
+	foreach ( $elements as $element ) {
+		$filtered['class'][] = $element->getAttribute('class');
+		$filtered['value'][] = $element->nodeValue;
+	}
 			
 	return $filtered;
 }
@@ -243,62 +241,62 @@ function jlv_nvg_make_table_details_output( $details_array, $elements_count=1 ) 
  */
 function jlv_nvg_make_formatted_details_output( $details_array, $elements_count=1 ) {
 	
-	 $details['details']['title']       = array( 'class' => $details_array['class'][0], 'value' => $details_array['value'][0] );
-	 $details['details']['text']        = array( 'class' => $details_array['class'][1], 'value' => $details_array['value'][1] );
+	$details['details']['title']       = array( 'class' => $details_array['class'][0], 'value' => $details_array['value'][0] );
+	$details['details']['text']        = array( 'class' => $details_array['class'][1], 'value' => $details_array['value'][1] );
 	 
-	 $details['date']['title']          = array( 'class' => $details_array['class'][2], 'value' => 'التواريخ' );
-	 $details['date']['text']           = array( 'class' => $details_array['class'][3], 'value' => $details_array['value'][2] );
+	$details['date']['title']          = array( 'class' => $details_array['class'][2], 'value' => 'التواريخ' );
+	$details['date']['text']           = array( 'class' => $details_array['class'][3], 'value' => $details_array['value'][2] );
 	 
-	 $details['days']['title']          = array( 'class' => $details_array['class'][2], 'value' => 'عدد الأيام' );
-	 $details['days']['text']           = array( 'class' => $details_array['class'][3], 'value' => $details_array['value'][3] );
+	$details['days']['title']          = array( 'class' => $details_array['class'][2], 'value' => 'عدد الأيام' );
+	$details['days']['text']           = array( 'class' => $details_array['class'][3], 'value' => $details_array['value'][3] );
 	 
-	 $details['seats']['title']         = array( 'class' => $details_array['class'][4], 'value' => $details_array['value'][4] );
-	 $details['seats']['text']          = array( 'class' => $details_array['class'][5], 'value' => $details_array['value'][5] );
+	$details['seats']['title']         = array( 'class' => $details_array['class'][4], 'value' => $details_array['value'][4] );
+	$details['seats']['text']          = array( 'class' => $details_array['class'][5], 'value' => $details_array['value'][5] );
 	 
-	 $details['field']['title']         = array( 'class' => $details_array['class'][6], 'value' => $details_array['value'][6] );
-	 $details['field']['text']          = array( 'class' => $details_array['class'][7], 'value' => $details_array['value'][7] );
+	$details['field']['title']         = array( 'class' => $details_array['class'][6], 'value' => $details_array['value'][6] );
+	$details['field']['text']          = array( 'class' => $details_array['class'][7], 'value' => $details_array['value'][7] );
 	 
-	 $details['type']['title']          = array( 'class' => $details_array['class'][8], 'value' => $details_array['value'][8] );
-	 $details['type']['text']           = array( 'class' => $details_array['class'][9], 'value' => $details_array['value'][9] );
+	$details['type']['title']          = array( 'class' => $details_array['class'][8], 'value' => $details_array['value'][8] );
+	$details['type']['text']           = array( 'class' => $details_array['class'][9], 'value' => $details_array['value'][9] );
 	 
-	 $details['gender']['title']        = array( 'class' => $details_array['class'][10], 'value' => $details_array['value'][10] );
-	 $details['gender']['text']         = array( 'class' => $details_array['class'][11], 'value' => $details_array['value'][11] );
+	$details['gender']['title']        = array( 'class' => $details_array['class'][10], 'value' => $details_array['value'][10] );
+	$details['gender']['text']         = array( 'class' => $details_array['class'][11], 'value' => $details_array['value'][11] );
 	 
-	 $details['qualification']['title'] = array( 'class' => $details_array['class'][12], 'value' => $details_array['value'][12] );
-	 $details['qualification']['text']  = array( 'class' => $details_array['class'][13], 'value' => $details_array['value'][13] );
+	$details['qualification']['title'] = array( 'class' => $details_array['class'][12], 'value' => $details_array['value'][12] );
+	$details['qualification']['text']  = array( 'class' => $details_array['class'][13], 'value' => $details_array['value'][13] );
 	 
-	 $details['remote']['title']        = array( 'class' => $details_array['class'][14], 'value' => $details_array['value'][14] );
-	 $details['remote']['text']         = array( 'class' => $details_array['class'][15], 'value' => $details_array['value'][15] );
+	$details['remote']['title']        = array( 'class' => $details_array['class'][14], 'value' => $details_array['value'][14] );
+	$details['remote']['text']         = array( 'class' => $details_array['class'][15], 'value' => $details_array['value'][15] );
 	 
-	 $details['urgent']['title']        = array( 'class' => $details_array['class'][16], 'value' => $details_array['value'][16] );
-	 $details['urgent']['text']         = array( 'class' => $details_array['class'][17], 'value' => $details_array['value'][17] );
+	$details['urgent']['title']        = array( 'class' => $details_array['class'][16], 'value' => $details_array['value'][16] );
+	$details['urgent']['text']         = array( 'class' => $details_array['class'][17], 'value' => $details_array['value'][17] );
 	 
-	 $details['disability']['title']    = array( 'class' => $details_array['class'][18], 'value' => $details_array['value'][18] );
-	 $details['disability']['text']     = array( 'class' => $details_array['class'][19], 'value' => $details_array['value'][19] );
+	$details['disability']['title']    = array( 'class' => $details_array['class'][18], 'value' => $details_array['value'][18] );
+	$details['disability']['text']     = array( 'class' => $details_array['class'][19], 'value' => $details_array['value'][19] );
 	 
-	 $details['interview']['title']     = array( 'class' => $details_array['class'][20], 'value' => $details_array['value'][20] );
-	 $details['interview']['text']      = array( 'class' => $details_array['class'][21], 'value' => $details_array['value'][21] );
+	$details['interview']['title']     = array( 'class' => $details_array['class'][20], 'value' => $details_array['value'][20] );
+	$details['interview']['text']      = array( 'class' => $details_array['class'][21], 'value' => $details_array['value'][21] );
 	 
-	 $details['benefits']['title']      = array( 'class' => $details_array['class'][22], 'value' => $details_array['value'][22] );
-	 $details['benefits']['text']       = array( 'class' => $details_array['class'][23], 'value' => $details_array['value'][23] );
+	$details['benefits']['title']      = array( 'class' => $details_array['class'][22], 'value' => $details_array['value'][22] );
+	$details['benefits']['text']       = array( 'class' => $details_array['class'][23], 'value' => $details_array['value'][23] );
 	 
-	 $details['benefits1']['title']     = array( 'class' => $details_array['class'][24], 'value' => $details_array['value'][24] );
-	 $details['benefits1']['text']      = array( 'class' => $details_array['class'][25], 'value' => $details_array['value'][25] );
+	$details['benefits1']['title']     = array( 'class' => $details_array['class'][24], 'value' => $details_array['value'][24] );
+	$details['benefits1']['text']      = array( 'class' => $details_array['class'][25], 'value' => $details_array['value'][25] );
 	 
-	 $details['skills']['title']        = array( 'class' => $details_array['class'][26], 'value' => $details_array['value'][26] );
-	 $details['skills']['text']         = array( 'class' => $details_array['class'][27], 'value' => $details_array['value'][27] );
+	$details['skills']['title']        = array( 'class' => $details_array['class'][26], 'value' => $details_array['value'][26] );
+	$details['skills']['text']         = array( 'class' => $details_array['class'][27], 'value' => $details_array['value'][27] );
 	 
-	 $details['support']['title']       = array( 'class' => $details_array['class'][28], 'value' => $details_array['value'][28] );
-	 $details['support']['text']        = array( 'class' => $details_array['class'][29], 'value' => $details_array['value'][29] );
+	$details['support']['title']       = array( 'class' => $details_array['class'][28], 'value' => $details_array['value'][28] );
+	$details['support']['text']        = array( 'class' => $details_array['class'][29], 'value' => $details_array['value'][29] );
 	 
-	 $details['tasks']['title']         = array( 'class' => $details_array['class'][30], 'value' => $details_array['value'][30] );
-	 $details['tasks']['text']          = array( 'class' => $details_array['class'][31], 'value' => $details_array['value'][31] );
+	$details['tasks']['title']         = array( 'class' => $details_array['class'][30], 'value' => $details_array['value'][30] );
+	$details['tasks']['text']          = array( 'class' => $details_array['class'][31], 'value' => $details_array['value'][31] );
 	 
-	 $details['profession']['title']    = array( 'class' => $details_array['class'][32], 'value' => $details_array['value'][32] );
-	 $details['profession']['text']     = array( 'class' => $details_array['class'][33], 'value' => $details_array['value'][33] );
+	$details['profession']['title']    = array( 'class' => $details_array['class'][32], 'value' => $details_array['value'][32] );
+	$details['profession']['text']     = array( 'class' => $details_array['class'][33], 'value' => $details_array['value'][33] );
 	 
-	 $details['age']['title']           = array( 'class' => $details_array['class'][34], 'value' => $details_array['value'][34] );
-	 $details['age']['text']            = array( 'class' => $details_array['class'][35], 'value' => $details_array['value'][35] );
+	$details['age']['title']           = array( 'class' => $details_array['class'][34], 'value' => $details_array['value'][34] );
+	$details['age']['text']            = array( 'class' => $details_array['class'][35], 'value' => $details_array['value'][35] );
 	 
 	$html  = '<style>.flex{display:flex;flex-wrap:wrap;justify-content:space-around;}.flexcol{flex-direction:row;flex-wrap:wrap;flex-grow:1;margin-right:75px;}</style>';
 
@@ -346,5 +344,5 @@ function jlv_nvg_make_formatted_details_output( $details_array, $elements_count=
 	
 	$html .= '</div>';
  
-	 return $html;
+	return $html;
 }
