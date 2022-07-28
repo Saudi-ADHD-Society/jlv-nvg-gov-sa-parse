@@ -45,5 +45,5 @@ The opportunity detail page doesn't have a unique class or ID for each element, 
 
 ### How to use
 1. Make two pages: Opportunities and Details, making Opportunities the parent of Details.
-2. On the Opportunities page, insert the shortcode `[nvg_fetch detail_page="/Opportunity/Details/"]`.
+2. On the Opportunities page, insert the shortcode `[nvg_fetch detail_page="/Opportunities/Details/"]`.
 3. On the Details page, insert the shortcode `[nvg_fetch_details]`.
